@@ -6,7 +6,7 @@
  * Time: 14:11
  */
 
-namespace CodeOrders\V1\Rest\Products;
+namespace CodeOrders\V1\Rest\Orders;
 
 
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -15,7 +15,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class ProductsRepositoryFactory implements FactoryInterface
+class OrdersRepositoryFactory implements FactoryInterface
 {
 
     /**
@@ -28,13 +28,14 @@ class ProductsRepositoryFactory implements FactoryInterface
     {
         $dbAdapter = $serviceLocator->get('DbAdapter');
 
-        $hydrator = new HydratingResultSet(new ClassMethods(), new ProductsEntity());
+        $hydrator = new HydratingResultSet(new ClassMethods(), new OrdersEntity());
 
-        $tableGateway = new TableGateway('products', $dbAdapter, null, $hydrator);
+        $tableGateway = new TableGateway('orders', $dbAdapter, null, $hydrator);
 
+        $ordersItemTableGateway = $serviceLocator->get('CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGateway');
         $userRepository = $serviceLocator->get('CodeOrders\\V1\\Rest\\Users\\UsersRepository');
 
-        return new ProductsRepository($tableGateway, $userRepository);
+        return new OrdersRepository($tableGateway, $ordersItemTableGateway, $userRepository);
 
     }
 }

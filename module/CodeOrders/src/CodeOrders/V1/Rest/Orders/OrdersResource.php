@@ -1,23 +1,29 @@
 <?php
-namespace CodeOrders\V1\Rest\Products;
+namespace CodeOrders\V1\Rest\Orders;
 
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
+use CodeOrders\V1\Rest\Users\UsersRepository;
 
-class ProductsResource extends AbstractResourceListener
+class OrdersResource extends AbstractResourceListener
 {
+
     /**
-     * @var ProductsRepository
+     * @var OrdersRepository
      */
     private $repository;
-
     /**
-     * @param ProductsRepository $repository
+     * @var OrdersService
      */
-    public function __construct (ProductsRepository $repository)
+    private $service;
+
+    public function __construct (OrdersRepository $repository, OrdersService $service)
     {
+
         $this->repository = $repository;
+        $this->service = $service;
     }
+
 
     /**
      * Create a resource
@@ -31,11 +37,15 @@ class ProductsResource extends AbstractResourceListener
 
         $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
 
-        if ($user->getRole() == "admin"){
-
-            return $this->repository->create($data);
+        if ($user->getRole() != 'salesman')
+        {
+            return new ApiProblem(403, "Desculpe, você não tem permissão para cadastrar pedidos!");
         }
-        return new ApiProblem(403,'Sem autorização para criar');
+
+        $result = $this->service->insert($data);
+        if ($result =="error"){
+            return new ApiProblem(405, 'Erro ao processar Ordem');
+        }
     }
 
     /**
@@ -46,15 +56,8 @@ class ProductsResource extends AbstractResourceListener
      */
     public function delete($id)
     {
-        $userRepository = $this->repository->getUsersRepository();
+        return $this->service->delete($id);
 
-        $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
-
-        if ($user->getRole() == "admin"){
-
-            return $this->repository->delete($id);
-        }
-        return new ApiProblem(403,'Sem autorização para criar');
     }
 
     /**
@@ -76,6 +79,15 @@ class ProductsResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
+        $userRepository = $this->repository->getUsersRepository();
+
+        $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
+
+        if ($user->getRole() == "salesman"){
+
+            return $this->repository->findByIdUsuario($id, $user->getId());
+        }
+
         return $this->repository->find($id);
     }
 
@@ -87,6 +99,14 @@ class ProductsResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
+        $userRepository = $this->repository->getUsersRepository();
+
+        $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
+
+        if ($user->getRole() == "salesman"){
+
+            return $this->repository->findAllIdUsuario($user->getId());
+        }
         return $this->repository->findAll();
     }
 
@@ -113,23 +133,8 @@ class ProductsResource extends AbstractResourceListener
         return new ApiProblem(405, 'The PUT method has not been defined for collections');
     }
 
-    /**
-     * Update a resource
-     *
-     * @param  mixed $id
-     * @param  mixed $data
-     * @return ApiProblem|mixed
-     */
     public function update($id, $data)
     {
-        $userRepository = $this->repository->getUsersRepository();
-
-        $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
-
-        if ($user->getRole() == "admin"){
-
-            return $this->repository->update($id, $data);
-        }
-        return new ApiProblem(403,'Sem autorização para Editar');
+        return $this->service->update($id, $data);
     }
 }

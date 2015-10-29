@@ -20,15 +20,6 @@ return array(
                     ),
                 ),
             ),
-            'code-orders.rest.clients' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/clients[/:clients_id]',
-                    'defaults' => array(
-                        'controller' => 'CodeOrders\\V1\\Rest\\Clients\\Controller',
-                    ),
-                ),
-            ),
             'code-orders.rest.products' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -38,14 +29,33 @@ return array(
                     ),
                 ),
             ),
+            'code-orders.rest.orders' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/orders[/:orders_id]',
+                    'defaults' => array(
+                        'controller' => 'CodeOrders\\V1\\Rest\\Orders\\Controller',
+                    ),
+                ),
+            ),
+            'code-orders.rest.clients' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/clients[/:clients_id]',
+                    'defaults' => array(
+                        'controller' => 'CodeOrders\\V1\\Rest\\Clients\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
         'uri' => array(
             0 => 'code-orders.rest.ptypes',
             1 => 'code-orders.rest.users',
-            2 => 'code-orders.rest.clients',
             3 => 'code-orders.rest.products',
+            4 => 'code-orders.rest.orders',
+            5 => 'code-orders.rest.clients',
         ),
     ),
     'zf-rest' => array(
@@ -93,28 +103,6 @@ return array(
             'collection_class' => 'CodeOrders\\V1\\Rest\\Users\\UsersCollection',
             'service_name' => 'users',
         ),
-        'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
-            'listener' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsResource',
-            'route_name' => 'code-orders.rest.clients',
-            'route_identifier_name' => 'clients_id',
-            'collection_name' => 'clients',
-            'entity_http_methods' => array(
-                0 => 'GET',
-                1 => 'PATCH',
-                2 => 'PUT',
-                3 => 'DELETE',
-            ),
-            'collection_http_methods' => array(
-                0 => 'GET',
-                1 => 'POST',
-            ),
-            'collection_query_whitelist' => array(),
-            'page_size' => 25,
-            'page_size_param' => null,
-            'entity_class' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsEntity',
-            'collection_class' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsCollection',
-            'service_name' => 'clients',
-        ),
         'CodeOrders\\V1\\Rest\\Products\\Controller' => array(
             'listener' => 'CodeOrders\\V1\\Rest\\Products\\ProductsResource',
             'route_name' => 'code-orders.rest.products',
@@ -137,13 +125,58 @@ return array(
             'collection_class' => 'CodeOrders\\V1\\Rest\\Products\\ProductsCollection',
             'service_name' => 'products',
         ),
+        'CodeOrders\\V1\\Rest\\Orders\\Controller' => array(
+            'listener' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersResource',
+            'route_name' => 'code-orders.rest.orders',
+            'route_identifier_name' => 'orders_id',
+            'collection_name' => 'orders',
+            'entity_http_methods' => array(
+                0 => 'GET',
+                1 => 'PATCH',
+                2 => 'PUT',
+                3 => 'DELETE',
+            ),
+            'collection_http_methods' => array(
+                0 => 'GET',
+                1 => 'POST',
+            ),
+            'collection_query_whitelist' => array(),
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersEntity',
+            'collection_class' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersCollection',
+            'service_name' => 'Orders',
+        ),
+        'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
+            'listener' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsResource',
+            'route_name' => 'code-orders.rest.clients',
+            'route_identifier_name' => 'clients_id',
+            'collection_name' => 'clients',
+            'entity_http_methods' => array(
+                0 => 'GET',
+                1 => 'PATCH',
+                2 => 'PUT',
+                3 => 'DELETE',
+            ),
+            'collection_http_methods' => array(
+                0 => 'GET',
+                1 => 'POST',
+            ),
+            'collection_query_whitelist' => array(),
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsEntity',
+            'collection_class' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsCollection',
+            'service_name' => 'Clients',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'CodeOrders\\V1\\Rest\\Ptypes\\Controller' => 'HalJson',
             'CodeOrders\\V1\\Rest\\Users\\Controller' => 'HalJson',
-            'CodeOrders\\V1\\Rest\\Clients\\Controller' => 'HalJson',
             'CodeOrders\\V1\\Rest\\Products\\Controller' => 'HalJson',
+            'CodeOrders\\V1\\Rest\\Orders\\Controller' => 'HalJson',
+            'CodeOrders\\V1\\Rest\\Clients\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'CodeOrders\\V1\\Rest\\Ptypes\\Controller' => array(
@@ -156,12 +189,17 @@ return array(
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
-            'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
+            'CodeOrders\\V1\\Rest\\Products\\Controller' => array(
                 0 => 'application/vnd.code-orders.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
-            'CodeOrders\\V1\\Rest\\Products\\Controller' => array(
+            'CodeOrders\\V1\\Rest\\Orders\\Controller' => array(
+                0 => 'application/vnd.code-orders.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
+            'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
                 0 => 'application/vnd.code-orders.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
@@ -176,11 +214,15 @@ return array(
                 0 => 'application/vnd.code-orders.v1+json',
                 1 => 'application/json',
             ),
-            'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
+            'CodeOrders\\V1\\Rest\\Products\\Controller' => array(
                 0 => 'application/vnd.code-orders.v1+json',
                 1 => 'application/json',
             ),
-            'CodeOrders\\V1\\Rest\\Products\\Controller' => array(
+            'CodeOrders\\V1\\Rest\\Orders\\Controller' => array(
+                0 => 'application/vnd.code-orders.v1+json',
+                1 => 'application/json',
+            ),
+            'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
                 0 => 'application/vnd.code-orders.v1+json',
                 1 => 'application/json',
             ),
@@ -212,18 +254,6 @@ return array(
                 'route_identifier_name' => 'users_id',
                 'is_collection' => true,
             ),
-            'CodeOrders\\V1\\Rest\\Clients\\ClientsEntity' => array(
-                'entity_identifier_name' => 'id',
-                'route_name' => 'code-orders.rest.clients',
-                'route_identifier_name' => 'clients_id',
-                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
-            ),
-            'CodeOrders\\V1\\Rest\\Clients\\ClientsCollection' => array(
-                'entity_identifier_name' => 'id',
-                'route_name' => 'code-orders.rest.clients',
-                'route_identifier_name' => 'clients_id',
-                'is_collection' => true,
-            ),
             'CodeOrders\\V1\\Rest\\Products\\ProductsEntity' => array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'code-orders.rest.products',
@@ -234,6 +264,30 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'code-orders.rest.products',
                 'route_identifier_name' => 'products_id',
+                'is_collection' => true,
+            ),
+            'CodeOrders\\V1\\Rest\\Orders\\OrdersEntity' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'code-orders.rest.orders',
+                'route_identifier_name' => 'orders_id',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ClassMethods',
+            ),
+            'CodeOrders\\V1\\Rest\\Orders\\OrdersCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'code-orders.rest.orders',
+                'route_identifier_name' => 'orders_id',
+                'is_collection' => true,
+            ),
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsEntity' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'code-orders.rest.clients',
+                'route_identifier_name' => 'clients_id',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ClassMethods',
+            ),
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'code-orders.rest.clients',
+                'route_identifier_name' => 'clients_id',
                 'is_collection' => true,
             ),
         ),
@@ -248,21 +302,11 @@ return array(
                 'entity_identifier_name' => 'id',
                 'table_service' => 'CodeOrders\\V1\\Rest\\Ptypes\\PtypesResource\\Table',
             ),
-            'CodeOrders\\V1\\Rest\\Clients\\ClientsResource' => array(
-                'adapter_name' => 'DbAdapter',
-                'table_name' => 'clients',
-                'hydrator_name' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
-                'controller_service_name' => 'CodeOrders\\V1\\Rest\\Clients\\Controller',
-                'entity_identifier_name' => 'id',
-            ),
         ),
     ),
     'zf-content-validation' => array(
         'CodeOrders\\V1\\Rest\\Ptypes\\Controller' => array(
             'input_filter' => 'CodeOrders\\V1\\Rest\\Ptypes\\Validator',
-        ),
-        'CodeOrders\\V1\\Rest\\Clients\\Controller' => array(
-            'input_filter' => 'CodeOrders\\V1\\Rest\\Clients\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -480,6 +524,48 @@ return array(
             'CodeOrders\\V1\\Rest\\Users\\UsersRepository' => 'CodeOrders\\V1\\Rest\\Users\\UsersRepositoryFactory',
             'CodeOrders\\V1\\Rest\\Products\\ProductsResource' => 'CodeOrders\\V1\\Rest\\Products\\ProductsResourceFactory',
             'CodeOrders\\V1\\Rest\\Products\\ProductsRepository' => 'CodeOrders\\V1\\Rest\\Products\\ProductsRepositoryFactory',
+            'CodeOrders\\V1\\Rest\\Orders\\OrdersResource' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersResourceFactory',
+            'CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGateway' => 'CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGatewayFactory',
+            'CodeOrders\\V1\\Rest\\Orders\\OrdersRepository' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersRepositoryFactory',
+            'CodeOrders\\V1\\Rest\\Orders\\OrdersService' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersServiceFactory',
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsResource' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsResourceFactory',
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsRepository' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsRepositoryFactory',
+        ),
+    ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(
+            'CodeOrders\\V1\\Rest\\Users\\Controller' => array(
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => true,
+                    'PATCH' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'CodeOrders\\V1\\Rest\\Products\\Controller' => array(
+                'collection' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+            ),
         ),
     ),
 );

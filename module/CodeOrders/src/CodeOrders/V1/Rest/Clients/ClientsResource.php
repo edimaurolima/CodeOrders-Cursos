@@ -1,24 +1,21 @@
 <?php
-namespace CodeOrders\V1\Rest\Products;
+namespace CodeOrders\V1\Rest\Clients;
 
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
-class ProductsResource extends AbstractResourceListener
+class ClientsResource extends AbstractResourceListener
 {
     /**
-     * @var ProductsRepository
+     * @var ClientsRepository
      */
     private $repository;
 
-    /**
-     * @param ProductsRepository $repository
-     */
-    public function __construct (ProductsRepository $repository)
+    public function __construct (ClientsRepository $repository)
     {
+
         $this->repository = $repository;
     }
-
     /**
      * Create a resource
      *

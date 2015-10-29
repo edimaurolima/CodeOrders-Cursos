@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: edimauro
- * Date: 09/10/15
- * Time: 14:11
+ * Date: 28/10/15
+ * Time: 14:18
  */
 
-namespace CodeOrders\V1\Rest\Products;
+namespace CodeOrders\V1\Rest\Clients;
 
 
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -15,7 +15,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class ProductsRepositoryFactory implements FactoryInterface
+class ClientsRepositoryFactory implements FactoryInterface
 {
 
     /**
@@ -28,13 +28,12 @@ class ProductsRepositoryFactory implements FactoryInterface
     {
         $dbAdapter = $serviceLocator->get('DbAdapter');
 
-        $hydrator = new HydratingResultSet(new ClassMethods(), new ProductsEntity());
+        $hydrator = new HydratingResultSet(new ClassMethods(), new ClientsEntity());
 
-        $tableGateway = new TableGateway('products', $dbAdapter, null, $hydrator);
+        $tableGateway = new TableGateway('clients', $dbAdapter, null, $hydrator);
 
         $userRepository = $serviceLocator->get('CodeOrders\\V1\\Rest\\Users\\UsersRepository');
 
-        return new ProductsRepository($tableGateway, $userRepository);
-
+        return new ClientsRepository($tableGateway, $userRepository);
     }
 }

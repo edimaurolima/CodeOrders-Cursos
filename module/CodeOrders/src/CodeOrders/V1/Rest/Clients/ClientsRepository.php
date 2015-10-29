@@ -2,22 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: edimauro
- * Date: 09/10/15
- * Time: 14:08
+ * Date: 28/10/15
+ * Time: 14:28
  */
 
-namespace CodeOrders\V1\Rest\Products;
-
+namespace CodeOrders\V1\Rest\Clients;
 
 use Zend\Console\Request;
-use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\TableGateway\TableGatewayInterface;
-use Zend\Paginator\Adapter\DbTableGateway;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 use CodeOrders\V1\Rest\Users\UsersRepository;
-use ZendDeveloperTools\Collector\DbCollector;
 
-class ProductsRepository
+class ClientsRepository
 {
     /**
      * @var TableGatewayInterface
@@ -28,9 +24,6 @@ class ProductsRepository
      */
     private $usersRepository;
 
-    /**
-     * @param TableGatewayInterface $tableGateway
-     */
     public function __construct (TableGatewayInterface $tableGateway,UsersRepository $usersRepository)
     {
         $this->tableGateway = $tableGateway;
@@ -44,15 +37,14 @@ class ProductsRepository
 
     public function findAll()
     {
-        $result =  $this->tableGateway->select();
-        return $result;
+        return $this->tableGateway->select();
     }
 
     public function find($id)
     {
-        $resultSet = $this->tableGateway->select(['id' => (int)$id]);
+        $resultset = $this->tableGateway->select(['id' => (int)$id]);
 
-        return $resultSet->current();
+        return $resultset->current();
     }
 
     public function create ($data)
@@ -60,10 +52,7 @@ class ProductsRepository
         $hydrator = new ObjectProperty();
         $data = $hydrator->extract($data);
 
-        $this->tableGateway->insert($data);
-        $data['id']= $this->tableGateway->getLastInsertValue();
-
-        return $data;
+        return $this->tableGateway->insert($data);
     }
 
     public function update ($id, $data)
@@ -71,16 +60,14 @@ class ProductsRepository
         $hydrator = new ObjectProperty();
         $data = $hydrator->extract($data);
 
-        $this->tableGateway->update($data, array('id'=> $id));
+        return $this->tableGateway->update($data, array('id'=> $id));
 
-        return $data;
     }
-
 
     public function delete($id)
     {
         $this->tableGateway->delete(['id' => (int)$id]);
-
         return true;
     }
+
 }
