@@ -8,6 +8,7 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Uri\UriFactory;
 
 class Module
 {
@@ -16,6 +17,38 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        UriFactory::registerScheme('chrome-extension', 'Zend\Uri\Uri');
+
+        $headers = $e->getRequest()->getHeaders();
+
+        if ($headers->has('Origin')&&
+            $headers->has('X-Requested-With') &&
+
+            //$headers->addHeaderLine('Access-Control-Allow-Methods: PUT, GET, POST, PATCH, DELETE, OPTIONS') &&
+
+            $headers->get('X-Requested-With')->getFieldValue() === 'com.ionicframework.codeorder994943'){
+
+            //convert to array because get method throw an exception
+            $headersArray = $headers->toArray();
+            $origin = $headersArray['Origin'];
+            if ($origin === 'file://') {
+                unset($headersArray['Origin']);
+                $headers->clearHeaders();
+                $headers->addHeaders($headersArray);
+
+                //this is a valid uri
+                $headers->addHeaderLine('Origin', 'file://mobile');
+            } else if ($origin === 'chrome-extension') {
+                unset($headersArray['Origin']);
+                $headers->clearHeaders();
+                $headers->addHeaders($headersArray);
+
+                //$headers->addHeaderLine('Access-Control-Allow-Methods: PUT, GET, POST, PATCH, DELETE, OPTIONS');
+                //this is a valid uri
+                //$headers->addHeaderLine('Origin', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo');
+                $headers->addHeaderLine('Origin', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo');
+            }
+        }
     }
 
     public function getConfig()

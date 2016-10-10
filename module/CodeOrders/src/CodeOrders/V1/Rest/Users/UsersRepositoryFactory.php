@@ -34,7 +34,9 @@ class UsersRepositoryFactory implements FactoryInterface
 
         $tableGateway = new TableGateway('oauth_users', $dbAdapter, null, $hydrator);
 
-        $usersRepository = new UsersRepository($tableGateway);
+        $auth = $serviceLocator->get('api-identity');
+
+        $usersRepository = new UsersRepository($tableGateway, $auth);
 
         return $usersRepository;
 

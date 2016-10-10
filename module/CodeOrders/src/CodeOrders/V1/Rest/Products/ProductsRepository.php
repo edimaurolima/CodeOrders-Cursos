@@ -11,6 +11,7 @@ namespace CodeOrders\V1\Rest\Products;
 
 use Zend\Console\Request;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Paginator\Adapter\DbTableGateway;
 use Zend\Stdlib\Hydrator\ObjectProperty;
@@ -31,7 +32,7 @@ class ProductsRepository
     /**
      * @param TableGatewayInterface $tableGateway
      */
-    public function __construct (TableGatewayInterface $tableGateway,UsersRepository $usersRepository)
+    public function __construct (AbstractTableGateway $tableGateway,UsersRepository $usersRepository)
     {
         $this->tableGateway = $tableGateway;
         $this->usersRepository = $usersRepository;
