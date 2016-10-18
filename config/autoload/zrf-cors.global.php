@@ -10,10 +10,16 @@ return array(
          /**
           * Set the list of allowed origins domain with protocol.
           */
+<<<<<<< HEAD
         'allowed_origins' => array('http://localhost:8100','http://localhost:8200','http://localhost:8300', 'file://mobile', 'chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop', 'chrome-extension://fdmmgilgnpjigdojojpjoooidkmcomcm', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo'),
 
 
         /**
+=======
+         'allowed_origins' => array('http://localhost:8100', 'file://mobile', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo'),
+
+         /**
+>>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
           * Set the list of HTTP verbs.
           */
          'allowed_methods' => array('GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'),

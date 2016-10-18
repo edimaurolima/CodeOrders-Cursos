@@ -54,8 +54,13 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'a
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OAuthProvider, OAuthTokenProvider,
                       $httpProvider, $provide){
 
+<<<<<<< HEAD
         $httpProvider.interceptors.splice(0,1);
         $httpProvider.interceptors.push('oauthFixInterceptor');
+=======
+        $httpProvider.interceptors.push('oauthFixInterceptor');
+        $httpProvider.interceptors.splice(0,1);
+>>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
 
         OAuthProvider.configure({
             baseUrl: 'http://localhost:8888',
@@ -153,7 +158,11 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.services', 'a
                         enumerable:true,
                         configurable: true,
                         writable: true
+<<<<<<< HEAD
                     } 
+=======
+                    }
+>>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
                 });
                 return $delegate;
             }]);

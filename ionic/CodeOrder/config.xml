@@ -17,5 +17,8 @@
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+<<<<<<< HEAD
   <allow-navigation href="*" />
+=======
+>>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
 </widget>
