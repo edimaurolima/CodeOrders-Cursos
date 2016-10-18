@@ -57,6 +57,7 @@ return array(
             4 => 'code-orders.rest.orders',
             5 => 'code-orders.rest.clients',
         ),
+        'default_version' => 1,
     ),
     'zf-rest' => array(
         'CodeOrders\\V1\\Rest\\Ptypes\\Controller' => array(
@@ -529,6 +530,7 @@ return array(
             'CodeOrders\\V1\\Rest\\Orders\\OrdersRepository' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersRepositoryFactory',
             'CodeOrders\\V1\\Rest\\Orders\\OrdersService' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersServiceFactory',
             'CodeOrders\\V1\\Rest\\Clients\\ClientsResource' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsResourceFactory',
+            'CodeOrders\\V1\\Rest\\Clients\\ClientsTableGateway' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsTableGatewayFactory',
             'CodeOrders\\V1\\Rest\\Clients\\ClientsRepository' => 'CodeOrders\\V1\\Rest\\Clients\\ClientsRepositoryFactory',
         ),
     ),

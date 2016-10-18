@@ -4,12 +4,13 @@ namespace CodeOrders\V1\Rest\Orders;
 class OrdersEntity
 {
     protected $id;
+    protected $client;
     protected $client_id;
     protected $user_id;
     protected $ptype_id;
     protected $total;
     protected $status;
-    protected $created_alt;
+    protected $createdAt;
     protected $items;
 
     public function __construct ()
@@ -38,6 +39,24 @@ class OrdersEntity
     /**
      * @return mixed
      */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client_id
+     * @return OrdersEntity
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getClientId()
     {
         return $this->client_id;
@@ -52,6 +71,8 @@ class OrdersEntity
         $this->client_id = $client_id;
         return $this;
     }
+
+
 
     /**
      * @return mixed
@@ -128,20 +149,22 @@ class OrdersEntity
     /**
      * @return mixed
      */
-    public function getCreatedAlt()
+    public function getCreatedAt()
     {
-        return $this->created_alt;
+        return $this->createdAt;
     }
 
     /**
-     * @param mixed $created_alt
+     * @param mixed $createdAt
      * @return OrdersEntity
      */
-    public function setCreatedAlt($created_alt)
+    public function setCreatedAt($createdAt)
     {
-        $this->created_alt = $created_alt;
+        $this->createdAt = $createdAt;
         return $this;
     }
+
+
 
     /**
      * @return mixed

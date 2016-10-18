@@ -1,7 +1,56 @@
 <ion-header-bar class="bar-positive">
-    <h1 class="title">Pedidos Recentes</h1>
+    <h1 class="title">Novo pedido</h1>
+    <button class="button" ng-click="addItem()">Adicionar Item</button>
 </ion-header-bar>
 
-<ion-content class="">
-    <h2>Pedidos recentes</h2>
+<ion-content>
+    <div class="list">
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Cliente</span>
+            <select class="form-control" ng-model="order.client_id" ng-options="o.id as o.name for o in clients">
+                <option value="">-Selecione o cliente</option>
+            </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Froma de pagto</span>
+            <select class="form-control" ng-model="order.ptype_id" ng-options="o.id as o.name for o in ptypes">
+                <option value="">-Selecione a forma de pgto</option>
+            </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+            <span class="input-label">Status</span>
+            <select class="form-control" ng-model="order.status" ng-options="o as o for o in statusList">
+                <option value="">-Selecione o Status</option>
+            </select>
+        </label>
+
+        <div class="item item-divider">Items</div>
+
+        <div class="item" ng-repeat="o in order.item">
+            <select class="form-control" ng-model="order.item[$index].product_id" ng-options="o.id as o.name for o in products" ng-change="setPrice($index)">
+                <option value="">-Selecione o produto</option>
+            </select>
+            <div class="row">
+                <div class="col">
+                    <label class="item-input item-input-wrapper">
+                        <input type="text" placeholder="Quantidade" ng-model="order.item[$index].quantity" ng-blur="calculateTotalRow($index)">
+                    </label>
+                </div>
+
+                <div class="col">
+                    <p>Preço: R$ {{order.item[$index].price}} </p>
+                    <p><strong>Total: {{order.item[$index].total}}</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row header">
+            <div class="col">Produto</div>
+            <div class="col">Quantidade</div>
+            <div class="col">Preço</div>
+            <div class="col">Total</div>
+        </div>
+
+        <button class="button button-block" ng-click="save()">Confirmar pedido</button>
+    </div>
 </ion-content>

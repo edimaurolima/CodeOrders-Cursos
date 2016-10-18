@@ -39,7 +39,7 @@ class OrdersResource extends AbstractResourceListener
 
         if ($user->getRole() != 'salesman')
         {
-            return new ApiProblem(403, "Desculpe, você não tem permissão para cadastrar pedidos!");
+                return new ApiProblem(403, "Desculpe, você não tem permissão para cadastrar pedidos!");
         }
 
         $result = $this->service->insert($data);
@@ -83,10 +83,10 @@ class OrdersResource extends AbstractResourceListener
 
         $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
 
-        if ($user->getRole() == "salesman"){
+        //if ($user->getRole() == "salesman"){
 
-            return $this->repository->findByIdUsuario($id, $user->getId());
-        }
+        //    return $this->repository->findByIdUsuario($id, $user->getId());
+        //}
 
         return $this->repository->find($id);
     }
@@ -103,10 +103,10 @@ class OrdersResource extends AbstractResourceListener
 
         $user = $userRepository->findByUsername($this->getIdentity()->getRoleId());
 
-        if ($user->getRole() == "salesman"){
+        //if ($user->getRole() == "salesman"){
 
-            return $this->repository->findAllIdUsuario($user->getId());
-        }
+            //return $this->repository->findAllIdUsuario($user->getId());
+        //}
         return $this->repository->findAll();
     }
 

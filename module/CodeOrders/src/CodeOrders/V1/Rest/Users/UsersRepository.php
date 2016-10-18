@@ -13,6 +13,7 @@ use Zend\Console\Request;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Paginator\Adapter\DbTableGateway;
 use ZendDeveloperTools\Collector\DbCollector;
+use ZF\MvcAuth\Identity\AuthenticatedIdentity;
 
 class UsersRepository
 {
@@ -20,14 +21,19 @@ class UsersRepository
      * @var TableGatewayInterface
      */
     private $tableGateway;
+    /**
+     * @var AuthenticatedIdentity
+     */
+    private $auth;
 
     /**
      * @param TableGatewayInterface $tableGateway
      */
-    public function __construct (TableGatewayInterface $tableGateway)
+    public function __construct (TableGatewayInterface $tableGateway, AuthenticatedIdentity $auth)
     {
 
         $this->tableGateway = $tableGateway;
+        $this->auth = $auth;
     }
 
     /**
@@ -52,6 +58,12 @@ class UsersRepository
     public function findByUsername ($username)
     {
         return $this->tableGateway->select(['username' => $username])->current();
+    }
+
+    public function getAuthenticated ()
+    {
+        $username = $this->auth->getAuthenticationIdentity()['user_id'];
+        return $this->findByUsername($username);
     }
 
     public function create ($data)

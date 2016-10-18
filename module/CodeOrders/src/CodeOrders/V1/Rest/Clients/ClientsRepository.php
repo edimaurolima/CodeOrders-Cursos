@@ -9,14 +9,15 @@
 namespace CodeOrders\V1\Rest\Clients;
 
 use Zend\Console\Request;
-use Zend\Db\TableGateway\TableGatewayInterface;
+use Zend\Db\TableGateway\AbstractTableGateway;
+use Zend\Paginator\Adapter\DbTableGateway;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 use CodeOrders\V1\Rest\Users\UsersRepository;
 
 class ClientsRepository
 {
     /**
-     * @var TableGatewayInterface
+     * @var AbstractTableGateway
      */
     private $tableGateway;
     /**
@@ -24,10 +25,10 @@ class ClientsRepository
      */
     private $usersRepository;
 
-    public function __construct (TableGatewayInterface $tableGateway,UsersRepository $usersRepository)
+    public function __construct (AbstractTableGateway $tableGateway)
     {
         $this->tableGateway = $tableGateway;
-        $this->usersRepository = $usersRepository;
+        //$this->usersRepository = $usersRepository;
     }
 
     public function getUsersRepository()
@@ -37,7 +38,9 @@ class ClientsRepository
 
     public function findAll()
     {
-        return $this->tableGateway->select();
+        $paginationAdapter = new DbTableGateway($this->tableGateway);
+
+        return new ClientsCollection($paginationAdapter);
     }
 
     public function find($id)

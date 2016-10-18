@@ -35,7 +35,9 @@ class OrdersRepositoryFactory implements FactoryInterface
         $ordersItemTableGateway = $serviceLocator->get('CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGateway');
         $userRepository = $serviceLocator->get('CodeOrders\\V1\\Rest\\Users\\UsersRepository');
 
-        return new OrdersRepository($tableGateway, $ordersItemTableGateway, $userRepository);
+        $clientTableGateway = $serviceLocator->get('CodeOrders\\V1\\Rest\\Clients\\ClientsTableGateway');
+
+        return new OrdersRepository($tableGateway, $ordersItemTableGateway, $userRepository, $clientTableGateway);
 
     }
 }

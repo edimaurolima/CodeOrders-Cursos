@@ -9,6 +9,7 @@
 namespace CodeOrders\V1\Rest\Orders;
 
 
+use CodeOrders\V1\Rest\Clients\ClientsRepository;
 use Zend\Console\Request;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Db\TableGateway\AbstractTableGateway;
@@ -31,12 +32,17 @@ class OrdersRepository
     private $OrderItemTableGateway;
 
     private $UsersRepository;
+    /**
+     * @var AbstractTableGateway
+     */
+    private $clientsTableGateway;
 
-    public function __construct (AbstractTableGateway $TableGateway, AbstractTableGateway $OrderItemTableGateway, UsersRepository $usersRepository)
+    public function __construct (AbstractTableGateway $TableGateway, AbstractTableGateway $OrderItemTableGateway, UsersRepository $usersRepository, AbstractTableGateway $clientsTableGateway)
     {
         $this->TableGateway = $TableGateway;
         $this->OrderItemTableGateway = $OrderItemTableGateway;
         $this->UsersRepository = $usersRepository;
+        $this->clientsTableGateway = $clientsTableGateway;
     }
 
     public function getUsersRepository()
@@ -58,16 +64,20 @@ class OrdersRepository
             $items = $this->OrderItemTableGateway->select(['order_id' => $order->getId()]);
             foreach ($items as $item)
             {
-                $order->AddItem($item);
+                $order->addItem($item);
             }
             $data = $hydrator->extract($order);
             $res[] = $data;
         }
 
+        //return  $res;
+
+
         $arrayAdapter = new ArrayAdapter($res);
         $ordersColletion = new OrdersCollection($arrayAdapter);
 
         return $ordersColletion;
+
     }
 
     public function insert( array $data)
@@ -92,26 +102,83 @@ class OrdersRepository
 
     public function find($id)
     {
-        $hydrator = new ClassMethods();
-        $hydrator->addStrategy('items', new OrderItemHydratorStrategy(new ClassMethods()));
+        $resultSet = $this->TableGateway->select(['id' => (int)$id]);
 
-        $order = $this->TableGateway->select(['id' => (int)$id])->current();
+        if ($resultSet->count() == 1) {
+            $hydrator =  new ClassMethods();
+            $hydrator->addStrategy('items', new OrderItemHydratorStrategy(new ClassMethods()));
+            $order = $resultSet->current();
 
-        $res = [];
+            $client = $this->clientsTableGateway->select(['id' => $order->getClientId()])->current();
 
-        $items = $this->OrderItemTableGateway->select(['order_id' => $order->getId()]);
-        foreach ($items as $item)
-        {
-            $order->AddItem($item);
+            $sql = $this->OrderItemTableGateway->getSql();
+            $select = $sql->select();
+
+            $select->join(
+                'products',
+                'order_items.product_id = products.id',
+                ['product.name' => 'name']
+            )
+                ->where(['order_id' => $order->getId()]);
+
+            $items = $this->OrderItemTableGateway->selectWith($select);
+
+            $order->setClient($client);
+
+            foreach ($items as $item) {
+                $order->addItem($item);
+            }
+
+            $data = $hydrator->extract($order);
+            return $data;
+
+
         }
-        $data = $hydrator->extract($order);
-        $res[] = $data;
 
-        $arrayAdapter = new ArrayAdapter($res);
-        $ordersColletion = new OrdersCollection($arrayAdapter);
-
-        return $ordersColletion;
+        return false;
     }
+
+
+    /*
+    public function find($id)
+    {
+        $resultSet = $this->TableGateway->select(['id' => (int)$id]);
+
+        if($resultSet->count() == 1){
+            $hydrator = new ClassMethods();
+            $hydrator->addStrategy('items', new OrderItemHydratorStrategy(new ClassMethods()));
+
+            $order = $resultSet->current();
+
+            $client = $this->clientsTableGateway
+                ->select(['id'=>$order->getClientId()])
+                ->current();
+
+            $sql = $this->orderItemTableGateway->getSql();
+            $select = $sql->select();
+            $select->join(
+                'products',
+                'order_items.product_id = product.id',
+                [
+                    'product_name'=>'name'
+                ]
+            )
+                ->where(['order_id' => $order->getId()]);
+
+            $items = $this->orderItemTableGateway->selectWith($select);
+
+            $order->setClient($client);
+            foreach($items as $item){
+                $order->addItem($item);
+            }
+
+            $data = $hydrator->extract($order);
+            return $data;
+        }
+
+        return false;
+    }
+    */
 
     public function deleteItem($idOrder)
     {
@@ -125,11 +192,11 @@ class OrdersRepository
     }
 
 
-    public function update ($id, $data)
+    public function update (array $data, $id)
     {
-        $this->TableGateway->update($data, array('id'=> $id));
+        $this->TableGateway->update($data, ['id'=> $id]);
 
-        return $data;
+        return $id;
     }
 
     public function findAllIdUsuario($idUsuario)
@@ -149,7 +216,7 @@ class OrdersRepository
         $items = $this->OrderItemTableGateway->select(['order_id' => $order->getId()]);
         foreach ($items as $item)
         {
-            $order->AddItem($item);
+            $order->addItem($item);
         }
         $data = $hydrator->extract($order);
         $res[] = $data;
