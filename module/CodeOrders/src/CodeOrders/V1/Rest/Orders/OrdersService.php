@@ -43,14 +43,10 @@ class OrdersService
     public function insert($data)
     {
         $hydrator = new ObjectProperty();
-<<<<<<< HEAD
-=======
-        
->>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
         $data->user_id = $this->usersRepository->getAuthenticated()->getId();
         $data->created_at = (new \DateTime())->format('Y-m-d');
         $data->total = 0;
-        $items = $data->item;   
+        $items = $data->item;
         unset($data->item);
 
         $orderData = $hydrator->extract($data);
@@ -61,19 +57,11 @@ class OrdersService
             $orderId = $this->repository->insert($orderData);
 
             $total = 0;
-<<<<<<< HEAD
 
             foreach ($items as $key=>$item) {
                 $product = $this->productsRepository->find($item['product_id']);
                 $item['order_id'] = $orderId;
                 $item['price'] = $product['price'];
-=======
-                
-            foreach ($items as $key=>$item) {
-                $product = $this->productsRepository->find($item['product_id']);
-                $item['order_id'] = $orderId;
-                $item['price'] = $product->getPrice();
->>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
                 $item['total'] = $items[$key]['total'] = $item['quantity'] * $item['price'];
                 $total += $item['total'];
 

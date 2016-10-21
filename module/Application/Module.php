@@ -19,7 +19,6 @@ class Module
         $moduleRouteListener->attach($eventManager);
         UriFactory::registerScheme('chrome-extension', 'Zend\Uri\Uri');
 
-<<<<<<< HEAD
         if (method_exists($e->getRequest(), 'getHeaders')) {
             $headers = $e->getRequest()->getHeaders();
 
@@ -53,36 +52,6 @@ class Module
                     $headers->addHeaderLine('Origin', 'chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop');
                     //$headers->addHeaderLine('Origin', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo');
                 }
-=======
-        $headers = $e->getRequest()->getHeaders();
-
-        if ($headers->has('Origin')&&
-            $headers->has('X-Requested-With') &&
-
-            //$headers->addHeaderLine('Access-Control-Allow-Methods: PUT, GET, POST, PATCH, DELETE, OPTIONS') &&
-
-            $headers->get('X-Requested-With')->getFieldValue() === 'com.ionicframework.codeorder994943'){
-
-            //convert to array because get method throw an exception
-            $headersArray = $headers->toArray();
-            $origin = $headersArray['Origin'];
-            if ($origin === 'file://') {
-                unset($headersArray['Origin']);
-                $headers->clearHeaders();
-                $headers->addHeaders($headersArray);
-
-                //this is a valid uri
-                $headers->addHeaderLine('Origin', 'file://mobile');
-            } else if ($origin === 'chrome-extension') {
-                unset($headersArray['Origin']);
-                $headers->clearHeaders();
-                $headers->addHeaders($headersArray);
-
-                //$headers->addHeaderLine('Access-Control-Allow-Methods: PUT, GET, POST, PATCH, DELETE, OPTIONS');
-                //this is a valid uri
-                //$headers->addHeaderLine('Origin', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo');
-                $headers->addHeaderLine('Origin', 'chrome-extension://aicmkgpgakddgnaphhhpliifpcfhicfo');
->>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
             }
         }
     }

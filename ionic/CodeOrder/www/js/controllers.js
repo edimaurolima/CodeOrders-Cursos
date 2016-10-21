@@ -3,11 +3,8 @@ angular.module('starter.controllers', [])
     .controller('LoginCtrl', ['$scope', '$http', '$state', 'OAuth', 'OAuthToken', '$localStorage',
         function($scope, $http, $state, OAuth, OAuthToken, $localStorage){
             console.log($localStorage.setObject('oauth', {
-<<<<<<< HEAD
                  access_token: "sdfdsf",
-=======
                 access_token: "sdfdsf",
->>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
                 refresh_token: "sdfdsf"
             }));
             console.log($localStorage.getObject('oauth'));
@@ -18,10 +15,7 @@ angular.module('starter.controllers', [])
                     $state.go('tabs.orders');
                 }, function(data){
                     $scope.error_login = "Usuário ou senha inválidos";
-<<<<<<< HEAD
                     //$scope.error_login = data;
-=======
->>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
                 });
             }
         }
@@ -84,11 +78,8 @@ angular.module('starter.controllers', [])
 
     .controller('OrderNewCtrl', ['$scope', '$http', '$state',
         function($scope, $http, $state){
-<<<<<<< HEAD
             $scope.clientes= [];
-=======
             $scope.clients= [];
->>>>>>> c59131adbe8fe963b248788d9c2326e4da539896
             $scope.ptypes= [];
             $scope.products= [];
             $scope.statusList= ["Pendente", "Processando", "Etregue"];
